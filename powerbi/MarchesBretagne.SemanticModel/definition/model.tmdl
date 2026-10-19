@@ -1,0 +1,13 @@
+model Model
+	culture: fr-FR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: fr-FR
+	discourageImplicitMeasures
+
+ref table Achat
+ref table Attribution
+ref table Acheteur
+ref table Titulaire
+ref table 'Famille achat'
+ref table Calendrier
+

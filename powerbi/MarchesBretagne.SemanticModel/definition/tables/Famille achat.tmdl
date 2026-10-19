@@ -1,0 +1,20 @@
+table 'Famille achat'
+
+	column cpv_division
+		dataType: string
+		isKey
+		summarizeBy: none
+		sourceColumn: cpv_division
+
+	column famille_achat
+		dataType: string
+		summarizeBy: none
+		sourceColumn: famille_achat
+
+	partition 'Famille achat' = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DossierDonnees & "famille_achat.parquet"))
+				in
+				    Source

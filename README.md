@@ -35,6 +35,7 @@ et [Power BI Desktop](https://www.microsoft.com/fr-fr/power-platform/products/po
 uv sync                                   # installe l'environnement
 uv run python -m pipeline.extract         # télécharge les marchés bretons
 uv run python -m pipeline.db build        # construit la base à partir de sql/
+uv run python -m pipeline.export          # exporte le modèle en Parquet pour Power BI
 ```
 
 Explorer avec un fichier SQL quelconque :
@@ -52,7 +53,7 @@ uv run python -m pipeline.db run sql/exploration/01_exploration.sql
 | `sql/seeds/` | Petites tables de référence versionnées (familles CPV) |
 | `sql/exploration/` | Requêtes d'exploration, non exécutées par `build` |
 | `etapes/` | Une note par étape : ce qui a été fait, pourquoi, et les résultats |
-| `powerbi/` | Rapport Power BI au format `.pbip` (à venir) |
+| `powerbi/` | Projet Power BI (`.pbip`) : modèle TMDL et rapport |
 | `schema.md` | Description de chaque colonne du jeu DECP |
 
 ## Avancement
@@ -61,6 +62,6 @@ uv run python -m pipeline.db run sql/exploration/01_exploration.sql
 - [x] Exploration et liste des problèmes de qualité ([étape 1](etapes/01-exploration.md))
 - [x] Nettoyage et modèle en étoile ([étape 2](etapes/02-modele.md))
 - [x] KPI en SQL ([étape 3](etapes/03-kpi.md))
-- [ ] Export Parquet pour Power BI
+- [x] Export Parquet et modèle Power BI ([étape 4a](etapes/04a-modele-power-bi.md))
 - [ ] Tableau de bord Power BI
 - [ ] Détection d'anomalies, comparée à `montant_anomalie`

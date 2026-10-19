@@ -1,0 +1,20 @@
+relationship achat_acheteur
+	fromColumn: Achat.acheteur_id
+	toColumn: Acheteur.acheteur_id
+
+relationship achat_famille
+	fromColumn: Achat.cpv_division
+	toColumn: 'Famille achat'.cpv_division
+
+relationship achat_calendrier
+	fromColumn: Achat.date_notification
+	toColumn: Calendrier.date
+
+relationship attribution_achat
+	fromColumn: Attribution.achat_cle
+	toColumn: Achat.achat_cle
+
+relationship attribution_titulaire
+	fromColumn: Attribution.titulaire_id
+	toColumn: Titulaire.titulaire_id
+

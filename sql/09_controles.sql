@@ -44,6 +44,11 @@ WITH c AS (
             WHERE d.est_doublon_probable
               AND NOT EXISTS (SELECT 1 FROM fact_marche a WHERE a.uid = d.achat_id AND NOT a.est_doublon_probable))
     UNION ALL
+    SELECT 'Clés des dimensions uniques sans tenir compte de la casse (comme Power BI)',
+           (SELECT count(*) - count(DISTINCT lower(acheteur_id)) FROM dim_acheteur)
+         + (SELECT count(*) - count(DISTINCT lower(titulaire_id)) FROM dim_titulaire)
+         + (SELECT count(*) - count(DISTINCT lower(cpv_division)) FROM dim_cpv)
+    UNION ALL
     SELECT 'Clés uniques dans les dimensions',
            (SELECT count(*) - count(DISTINCT acheteur_id) FROM dim_acheteur)
          + (SELECT count(*) - count(DISTINCT titulaire_id) FROM dim_titulaire)

@@ -1,0 +1,55 @@
+table Acheteur
+
+	column acheteur_id
+		dataType: string
+		isKey
+		summarizeBy: none
+		sourceColumn: acheteur_id
+
+	column acheteur_nom
+		dataType: string
+		summarizeBy: none
+		sourceColumn: acheteur_nom
+
+	column acheteur_categorie
+		dataType: string
+		summarizeBy: none
+		sourceColumn: acheteur_categorie
+
+	column commune
+		dataType: string
+		summarizeBy: none
+		sourceColumn: commune
+
+	column departement_code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: departement_code
+
+	column departement
+		dataType: string
+		summarizeBy: none
+		sourceColumn: departement
+
+	column latitude
+		dataType: double
+		summarizeBy: none
+		sourceColumn: latitude
+
+	column longitude
+		dataType: double
+		summarizeBy: none
+		sourceColumn: longitude
+
+	column population
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: population
+
+	partition Acheteur = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DossierDonnees & "acheteur.parquet"))
+				in
+				    Source

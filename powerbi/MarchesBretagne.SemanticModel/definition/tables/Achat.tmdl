@@ -1,0 +1,194 @@
+table Achat
+
+	column achat_cle
+		dataType: int64
+		isKey
+		isHidden
+		summarizeBy: none
+		sourceColumn: achat_cle
+
+	column achat_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: achat_id
+
+	column acheteur_id
+		dataType: string
+		summarizeBy: none
+		sourceColumn: acheteur_id
+
+	column cpv_division
+		dataType: string
+		summarizeBy: none
+		sourceColumn: cpv_division
+
+	column date_notification
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: date_notification
+
+	column objet
+		dataType: string
+		summarizeBy: none
+		sourceColumn: objet
+
+	column nature
+		dataType: string
+		summarizeBy: none
+		sourceColumn: nature
+
+	column type
+		dataType: string
+		summarizeBy: none
+		sourceColumn: type
+
+	column procedure
+		dataType: string
+		summarizeBy: none
+		sourceColumn: procedure
+
+	column forme_prix
+		dataType: string
+		summarizeBy: none
+		sourceColumn: forme_prix
+
+	column duree_mois
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: duree_mois
+
+	column offres_recues
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: offres_recues
+
+	column nb_titulaires
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: nb_titulaires
+
+	column nb_modifications
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: nb_modifications
+
+	column montant_initial
+		dataType: double
+		formatString: #,0 €
+		summarizeBy: none
+		sourceColumn: montant_initial
+
+	column montant
+		dataType: double
+		formatString: #,0 €
+		summarizeBy: none
+		sourceColumn: montant
+
+	column montant_brut
+		dataType: double
+		formatString: #,0 €
+		summarizeBy: none
+		sourceColumn: montant_brut
+
+	column motif_exclusion_montant
+		dataType: string
+		summarizeBy: none
+		sourceColumn: motif_exclusion_montant
+
+	column montant_anomalie
+		dataType: string
+		summarizeBy: none
+		sourceColumn: montant_anomalie
+
+	column clause_sociale
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: clause_sociale
+
+	column clause_environnementale
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: clause_environnementale
+
+	column marche_innovant
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: marche_innovant
+
+	/// Nombre d'achats (marchés dédoublonnés, depuis 2019)
+	measure Achats = COUNTROWS ( Achat )
+		formatString: #,0
+		displayFolder: Volume
+
+	/// Somme des montants retenus (ordre de grandeur : souvent des maximums d'accords-cadres)
+	measure 'Montant total' = SUM ( Achat[montant] )
+		formatString: #,0 €
+		displayFolder: Volume
+
+	/// Montant du marché typique : la médiane, insensible aux montants géants
+	measure 'Montant médian' = MEDIAN ( Achat[montant] )
+		formatString: #,0 €
+		displayFolder: Volume
+
+	/// Part des achats n'ayant reçu qu'une offre, parmi ceux où le nombre d'offres est connu
+	measure 'Taux offre unique' =
+			DIVIDE (
+			    COALESCE ( CALCULATE ( COUNTROWS ( Achat ), Achat[offres_recues] = 1 ), 0 ),
+			    COUNT ( Achat[offres_recues] )
+			)
+		formatString: 0.0 %
+		displayFolder: Concurrence
+
+	/// Part des achats où le nombre d'offres est renseigné
+	measure 'Couverture offres' = DIVIDE ( COUNT ( Achat[offres_recues] ), [Achats] )
+		formatString: 0.0 %
+		displayFolder: Concurrence
+
+	measure 'Offres reçues (médiane)' = MEDIAN ( Achat[offres_recues] )
+		formatString: 0.0
+		displayFolder: Concurrence
+
+	/// Part des achats avec une clause ou un critère environnemental, parmi ceux où l'information existe
+	measure 'Part clause environnementale' =
+			DIVIDE (
+			    COALESCE ( CALCULATE ( COUNTROWS ( Achat ), Achat[clause_environnementale] = TRUE () ), 0 ),
+			    CALCULATE ( COUNTROWS ( Achat ), NOT ISBLANK ( Achat[clause_environnementale] ) )
+			)
+		formatString: 0.0 %
+		displayFolder: Clauses
+
+	measure 'Part clause sociale' =
+			DIVIDE (
+			    COALESCE ( CALCULATE ( COUNTROWS ( Achat ), Achat[clause_sociale] = TRUE () ), 0 ),
+			    CALCULATE ( COUNTROWS ( Achat ), NOT ISBLANK ( Achat[clause_sociale] ) )
+			)
+		formatString: 0.0 %
+		displayFolder: Clauses
+
+	measure 'Couverture clauses' =
+			DIVIDE ( CALCULATE ( COUNTROWS ( Achat ), NOT ISBLANK ( Achat[clause_environnementale] ) ), [Achats] )
+		formatString: 0.0 %
+		displayFolder: Clauses
+
+	/// Part des achats modifiés par au moins un avenant
+	measure 'Part modifiés' = DIVIDE ( COALESCE ( CALCULATE ( COUNTROWS ( Achat ), Achat[nb_modifications] > 0 ), 0 ), [Achats] )
+		formatString: 0.0 %
+		displayFolder: Avenants
+
+	/// Évolution cumulée du montant des achats modifiés (mêmes achats au numérateur et au dénominateur)
+	measure 'Évolution montant avenants' =
+			VAR Modifies =
+			    FILTER ( Achat, Achat[nb_modifications] > 0 && Achat[montant] > 0 && Achat[montant_initial] > 0 )
+			RETURN
+			    DIVIDE ( SUMX ( Modifies, Achat[montant] ), SUMX ( Modifies, Achat[montant_initial] ) ) - 1
+		formatString: +0.0 %;-0.0 %;0.0 %
+		displayFolder: Avenants
+
+	partition Achat = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DossierDonnees & "achat.parquet"))
+				in
+				    Source
