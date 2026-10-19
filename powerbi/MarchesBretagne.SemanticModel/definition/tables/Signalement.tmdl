@@ -1,20 +1,24 @@
 table Signalement
-
-	column achat_cle
-		dataType: int64
-		isHidden
-		summarizeBy: none
-		sourceColumn: achat_cle
-
-	column regle
-		dataType: string
-		summarizeBy: none
-		sourceColumn: regle
+	lineageTag: c94a9112-29aa-44ea-aba6-db7ebcbcd60a
 
 	/// Nombre de règles déclenchées (un achat peut en déclencher plusieurs)
 	measure Signalements = COUNTROWS ( Signalement )
 		formatString: #,0
 		displayFolder: Anomalies
+		lineageTag: 3cc1a12a-bb45-45cc-9ebb-afbac63c5744
+
+	column achat_cle
+		dataType: int64
+		isHidden
+		lineageTag: 7a0fbba0-df17-40a0-a723-f653f1a1098a
+		summarizeBy: none
+		sourceColumn: achat_cle
+
+	column regle
+		dataType: string
+		lineageTag: df1a4632-1503-4c71-b5d6-0e002ea5f58d
+		summarizeBy: none
+		sourceColumn: regle
 
 	partition Signalement = m
 		mode: import
@@ -23,3 +27,4 @@ table Signalement
 				    Source = Parquet.Document(File.Contents(DossierDonnees & "signalement.parquet"))
 				in
 				    Source
+

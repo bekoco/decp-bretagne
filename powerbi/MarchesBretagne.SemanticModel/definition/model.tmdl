@@ -1,8 +1,10 @@
 model Model
 	culture: fr-FR
 	defaultPowerBIDataSourceVersion: powerBI_V3
-	sourceQueryCulture: fr-FR
 	discourageImplicitMeasures
+	sourceQueryCulture: fr-FR
+
+annotation PBI_ProTooling = ["DevMode"]
 
 ref table Achat
 ref table Attribution
@@ -11,4 +13,6 @@ ref table Titulaire
 ref table 'Famille achat'
 ref table Calendrier
 ref table Signalement
+
+ref cultureInfo fr-FR
 

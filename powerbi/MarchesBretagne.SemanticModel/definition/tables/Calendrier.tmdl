@@ -1,36 +1,43 @@
 table Calendrier
+	lineageTag: d80b85af-000b-4837-8ee4-a51e8ffb85e1
 	dataCategory: Time
 
 	column date
 		dataType: dateTime
 		isKey
 		formatString: dd/mm/yyyy
+		lineageTag: 2bc1d81e-d935-40fc-a154-10f589f69b51
 		summarizeBy: none
 		sourceColumn: date
 
 	column annee
 		dataType: int64
+		lineageTag: be6efe94-843e-4469-b8b7-d6f44b5663db
 		summarizeBy: none
 		sourceColumn: annee
 
 	column trimestre
 		dataType: int64
+		lineageTag: df6ea1fd-1132-4e57-8e17-cad9c547f9cf
 		summarizeBy: none
 		sourceColumn: trimestre
 
 	column mois
 		dataType: int64
+		lineageTag: 08f51e63-e571-454e-85b7-5543c295176a
 		summarizeBy: none
 		sourceColumn: mois
 
 	column mois_nom
 		dataType: string
-		sortByColumn: mois
+		lineageTag: 5e28d78d-38ee-4c81-a76b-48d3fec08c08
 		summarizeBy: none
 		sourceColumn: mois_nom
+		sortByColumn: mois
 
 	column annee_mois
 		dataType: string
+		lineageTag: fca69691-3ffb-41d0-ae14-d2bfdf355450
 		summarizeBy: none
 		sourceColumn: annee_mois
 
@@ -41,3 +48,4 @@ table Calendrier
 				    Source = Parquet.Document(File.Contents(DossierDonnees & "calendrier.parquet"))
 				in
 				    Source
+

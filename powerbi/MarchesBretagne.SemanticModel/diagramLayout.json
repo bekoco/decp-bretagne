@@ -1,0 +1,113 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 339.9033655592583,
+            "y": 323.05721720115196
+          },
+          "nodeIndex": "Achat",
+          "nodeLineageTag": "32219ad4-1559-47c1-8457-5985f4bd9ab8",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 573.50383165250946,
+            "y": -50
+          },
+          "nodeIndex": "Acheteur",
+          "nodeLineageTag": "6fe35270-f3ac-478a-a93a-675deb0a973b",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 916.4632029016459,
+            "y": 145.17149214271114
+          },
+          "nodeIndex": "Attribution",
+          "nodeLineageTag": "cf104109-e6eb-4f3a-9835-0d05d52d3601",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 242.67174516457777,
+            "y": 47.229397727670744
+          },
+          "nodeIndex": "Calendrier",
+          "nodeLineageTag": "d80b85af-000b-4837-8ee4-a51e8ffb85e1",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 412.98828587721675,
+            "y": 677.04957645685556
+          },
+          "nodeIndex": "Famille achat",
+          "nodeLineageTag": "19a606e9-71e8-4fe0-a916-77eee3a6e935",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 625.22504126374042
+          },
+          "nodeIndex": "Signalement",
+          "nodeLineageTag": "c94a9112-29aa-44ea-aba6-db7ebcbcd60a",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 627.27911695887792,
+            "y": 302.95980176350213
+          },
+          "nodeIndex": "Titulaire",
+          "nodeLineageTag": "d2ccbf91-a860-427c-9aaf-560a3b2cbbb9",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Toutes les tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Toutes les tables",
+  "defaultDiagram": "Toutes les tables"
+}

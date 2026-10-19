@@ -1,4 +1,5 @@
 /// Dossier des fichiers Parquet produits par  uv run python -m pipeline.export
 /// (chemin absolu : à adapter si le projet est cloné ailleurs)
 expression DossierDonnees = "C:\Users\pierre\Dev\decp-bretagne\data\export\" meta [IsParameterQuery = true, IsParameterQueryRequired = true, Type = "Text"]
+	lineageTag: d213777c-c809-4f85-a218-c9115b29cfef
 

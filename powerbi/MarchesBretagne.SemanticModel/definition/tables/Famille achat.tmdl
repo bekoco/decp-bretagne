@@ -1,13 +1,16 @@
 table 'Famille achat'
+	lineageTag: 19a606e9-71e8-4fe0-a916-77eee3a6e935
 
 	column cpv_division
 		dataType: string
 		isKey
+		lineageTag: 8792d618-49d9-4460-987c-7c9ac7dffcbc
 		summarizeBy: none
 		sourceColumn: cpv_division
 
 	column famille_achat
 		dataType: string
+		lineageTag: d479d3cd-d96f-4976-9855-b21613b3bba1
 		summarizeBy: none
 		sourceColumn: famille_achat
 
@@ -18,3 +21,4 @@ table 'Famille achat'
 				    Source = Parquet.Document(File.Contents(DossierDonnees & "famille_achat.parquet"))
 				in
 				    Source
+

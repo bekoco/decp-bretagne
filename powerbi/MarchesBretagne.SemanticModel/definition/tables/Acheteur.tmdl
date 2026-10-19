@@ -1,48 +1,58 @@
 table Acheteur
+	lineageTag: 6fe35270-f3ac-478a-a93a-675deb0a973b
 
 	column acheteur_id
 		dataType: string
 		isKey
+		lineageTag: aab9b14d-250d-4811-b98c-5b04c5f8a239
 		summarizeBy: none
 		sourceColumn: acheteur_id
 
 	column acheteur_nom
 		dataType: string
+		lineageTag: ac0530fa-7315-493e-adf1-0290206d32f0
 		summarizeBy: none
 		sourceColumn: acheteur_nom
 
 	column acheteur_categorie
 		dataType: string
+		lineageTag: bbd559d4-122c-48dd-8b21-bb6ad3370027
 		summarizeBy: none
 		sourceColumn: acheteur_categorie
 
 	column commune
 		dataType: string
+		lineageTag: a7ec1f1e-ea9a-48eb-a369-34a551498e38
 		summarizeBy: none
 		sourceColumn: commune
 
 	column departement_code
 		dataType: string
+		lineageTag: 8f42a0c8-248e-4dd8-8299-26798ffda764
 		summarizeBy: none
 		sourceColumn: departement_code
 
 	column departement
 		dataType: string
+		lineageTag: 64bb47b5-3909-406c-a37c-41ee0618e461
 		summarizeBy: none
 		sourceColumn: departement
 
 	column latitude
 		dataType: double
+		lineageTag: 001407f7-c3c6-4a2a-a6eb-c32417d9c435
 		summarizeBy: none
 		sourceColumn: latitude
 
 	column longitude
 		dataType: double
+		lineageTag: 8aebf698-f7cc-49f9-8208-16d291db1132
 		summarizeBy: none
 		sourceColumn: longitude
 
 	column population
 		dataType: int64
+		lineageTag: 2cf5377f-7c12-4739-8c39-58fa6d80d67a
 		summarizeBy: none
 		sourceColumn: population
 
@@ -53,3 +63,4 @@ table Acheteur
 				    Source = Parquet.Document(File.Contents(DossierDonnees & "acheteur.parquet"))
 				in
 				    Source
+

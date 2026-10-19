@@ -1,53 +1,64 @@
 table Titulaire
+	lineageTag: d2ccbf91-a860-427c-9aaf-560a3b2cbbb9
 
 	column titulaire_id
 		dataType: string
 		isKey
+		lineageTag: f74577b9-1e7a-4959-9041-0d0fcc4c8f8e
 		summarizeBy: none
 		sourceColumn: titulaire_id
 
 	column type_identifiant
 		dataType: string
+		lineageTag: d5cd652a-0193-46cd-9c5b-112a49e48e60
 		summarizeBy: none
 		sourceColumn: type_identifiant
 
 	column titulaire_nom
 		dataType: string
+		lineageTag: 931fd6e7-82b9-41ac-bc87-973880a3de2c
 		summarizeBy: none
 		sourceColumn: titulaire_nom
 
 	column taille_entreprise
 		dataType: string
+		lineageTag: 932d18a4-1243-4338-9d07-4b612f37e80b
 		summarizeBy: none
 		sourceColumn: taille_entreprise
 
 	column activite_code
 		dataType: string
+		lineageTag: 20bd590e-0f47-489d-8422-894553950e8a
 		summarizeBy: none
 		sourceColumn: activite_code
 
 	column activite
 		dataType: string
+		lineageTag: 1a726d30-389e-42a1-b18e-b3be9b627ca7
 		summarizeBy: none
 		sourceColumn: activite
 
 	column commune
 		dataType: string
+		lineageTag: 12a275ff-296f-49e4-990e-84f367dd1ace
 		summarizeBy: none
 		sourceColumn: commune
 
 	column departement
 		dataType: string
+		lineageTag: 54475f9d-0cfa-4880-8fcc-ed1b31ed8e52
 		summarizeBy: none
 		sourceColumn: departement
 
 	column region
 		dataType: string
+		lineageTag: 27a53676-3c69-4d5c-8e0d-94e355160a1a
 		summarizeBy: none
 		sourceColumn: region
 
 	column est_breton
 		dataType: boolean
+		lineageTag: 570b386b-28a9-4973-ba20-25846566b5cc
 		summarizeBy: none
 		sourceColumn: est_breton
 
@@ -58,3 +69,4 @@ table Titulaire
 				    Source = Parquet.Document(File.Contents(DossierDonnees & "titulaire.parquet"))
 				in
 				    Source
+

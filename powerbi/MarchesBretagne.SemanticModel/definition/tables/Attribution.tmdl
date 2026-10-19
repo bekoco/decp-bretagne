@@ -1,47 +1,28 @@
 table Attribution
-
-	column achat_cle
-		dataType: int64
-		isHidden
-		summarizeBy: none
-		sourceColumn: achat_cle
-
-	column titulaire_id
-		dataType: string
-		summarizeBy: none
-		sourceColumn: titulaire_id
-
-	column titulaire_distance_km
-		dataType: int64
-		summarizeBy: none
-		sourceColumn: titulaire_distance_km
-
-	column montant_ventile
-		dataType: double
-		formatString: #,0 €
-		summarizeBy: none
-		sourceColumn: montant_ventile
+	lineageTag: cf104109-e6eb-4f3a-9835-0d05d52d3601
 
 	/// Nombre de couples achat × titulaire
 	measure Attributions = COUNTROWS ( Attribution )
 		formatString: #,0
 		displayFolder: Titulaires
+		lineageTag: ac8b070f-a212-4bb8-9ea2-a5fe5adabead
 
 	/// Montant réparti à parts égales entre co-titulaires (évite le double compte)
 	measure 'Montant ventilé' = SUM ( Attribution[montant_ventile] )
 		formatString: #,0 €
 		displayFolder: Titulaires
+		lineageTag: dc841b42-1712-4321-976a-8f9a447eaffd
 
 	/// Part des attributions du groupe affiché (ex. PME) dans le total, toutes tailles d'entreprise confondues
-	measure 'Part des attributions' =
-			DIVIDE ( [Attributions], CALCULATE ( [Attributions], ALL ( Titulaire[taille_entreprise] ) ) )
+	measure 'Part des attributions' = DIVIDE ( [Attributions], CALCULATE ( [Attributions], ALL ( Titulaire[taille_entreprise] ) ) )
 		formatString: 0.0 %
 		displayFolder: Titulaires
+		lineageTag: bddd62fd-35bd-4c13-9c58-ebae6367606d
 
-	measure 'Part du montant' =
-			DIVIDE ( [Montant ventilé], CALCULATE ( [Montant ventilé], ALL ( Titulaire[taille_entreprise] ) ) )
+	measure 'Part du montant' = DIVIDE ( [Montant ventilé], CALCULATE ( [Montant ventilé], ALL ( Titulaire[taille_entreprise] ) ) )
 		formatString: 0.0 %
 		displayFolder: Titulaires
+		lineageTag: 9d5cfe4b-20c5-4b91-8fca-01acbf2609b2
 
 	/// Part des attributions à une entreprise bretonne, parmi les titulaires dont la région est connue
 	measure 'Part titulaires bretons' =
@@ -51,10 +32,38 @@ table Attribution
 			)
 		formatString: 0.0 %
 		displayFolder: Achat local
+		lineageTag: e55ad00d-a554-4833-bd8d-6593a504935f
 
 	measure 'Distance médiane (km)' = MEDIAN ( Attribution[titulaire_distance_km] )
 		formatString: #,0
 		displayFolder: Achat local
+		lineageTag: d7269b70-1180-4d54-b024-5dab2efc41e0
+
+	column achat_cle
+		dataType: int64
+		isHidden
+		lineageTag: 39afebdb-d3b1-4c06-900d-b99d98a76fe8
+		summarizeBy: none
+		sourceColumn: achat_cle
+
+	column titulaire_id
+		dataType: string
+		lineageTag: eae1914e-0c34-4a19-b894-084db47bd45a
+		summarizeBy: none
+		sourceColumn: titulaire_id
+
+	column titulaire_distance_km
+		dataType: int64
+		lineageTag: f95451ba-e1c8-4164-a127-9114b1b856ed
+		summarizeBy: none
+		sourceColumn: titulaire_distance_km
+
+	column montant_ventile
+		dataType: double
+		formatString: #,0 €
+		lineageTag: 1d8e6d3a-a2b6-4a69-b4a2-851bc723b6c5
+		summarizeBy: none
+		sourceColumn: montant_ventile
 
 	partition Attribution = m
 		mode: import
@@ -63,3 +72,4 @@ table Attribution
 				    Source = Parquet.Document(File.Contents(DossierDonnees & "attribution.parquet"))
 				in
 				    Source
+

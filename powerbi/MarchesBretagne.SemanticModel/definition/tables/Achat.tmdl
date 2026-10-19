@@ -1,156 +1,23 @@
 table Achat
-
-	column achat_cle
-		dataType: int64
-		isKey
-		isHidden
-		summarizeBy: none
-		sourceColumn: achat_cle
-
-	column achat_id
-		dataType: string
-		summarizeBy: none
-		sourceColumn: achat_id
-
-	column acheteur_id
-		dataType: string
-		summarizeBy: none
-		sourceColumn: acheteur_id
-
-	column cpv_division
-		dataType: string
-		summarizeBy: none
-		sourceColumn: cpv_division
-
-	column date_notification
-		dataType: dateTime
-		formatString: dd/mm/yyyy
-		summarizeBy: none
-		sourceColumn: date_notification
-
-	column objet
-		dataType: string
-		summarizeBy: none
-		sourceColumn: objet
-
-	column nature
-		dataType: string
-		summarizeBy: none
-		sourceColumn: nature
-
-	column type
-		dataType: string
-		summarizeBy: none
-		sourceColumn: type
-
-	column procedure
-		dataType: string
-		summarizeBy: none
-		sourceColumn: procedure
-
-	column forme_prix
-		dataType: string
-		summarizeBy: none
-		sourceColumn: forme_prix
-
-	column duree_mois
-		dataType: int64
-		summarizeBy: none
-		sourceColumn: duree_mois
-
-	column offres_recues
-		dataType: int64
-		summarizeBy: none
-		sourceColumn: offres_recues
-
-	column nb_titulaires
-		dataType: int64
-		summarizeBy: none
-		sourceColumn: nb_titulaires
-
-	column nb_modifications
-		dataType: int64
-		summarizeBy: none
-		sourceColumn: nb_modifications
-
-	column montant_initial
-		dataType: double
-		formatString: #,0 €
-		summarizeBy: none
-		sourceColumn: montant_initial
-
-	column montant
-		dataType: double
-		formatString: #,0 €
-		summarizeBy: none
-		sourceColumn: montant
-
-	column montant_brut
-		dataType: double
-		formatString: #,0 €
-		summarizeBy: none
-		sourceColumn: montant_brut
-
-	column motif_exclusion_montant
-		dataType: string
-		summarizeBy: none
-		sourceColumn: motif_exclusion_montant
-
-	column montant_anomalie
-		dataType: string
-		summarizeBy: none
-		sourceColumn: montant_anomalie
-
-	column clause_sociale
-		dataType: boolean
-		summarizeBy: none
-		sourceColumn: clause_sociale
-
-	column clause_environnementale
-		dataType: boolean
-		summarizeBy: none
-		sourceColumn: clause_environnementale
-
-	column marche_innovant
-		dataType: boolean
-		summarizeBy: none
-		sourceColumn: marche_innovant
-
-	column z_modifie
-		dataType: double
-		formatString: 0.00
-		summarizeBy: none
-		sourceColumn: z_modifie
-
-	column raisons
-		dataType: string
-		summarizeBy: none
-		sourceColumn: raisons
-
-	column signale_par_nous
-		dataType: string
-		summarizeBy: none
-		sourceColumn: signale_par_nous
-
-	column signale_par_reference
-		dataType: string
-		summarizeBy: none
-		sourceColumn: signale_par_reference
+	lineageTag: 32219ad4-1559-47c1-8457-5985f4bd9ab8
 
 	/// Nombre d'achats (marchés dédoublonnés, depuis 2019)
 	measure Achats = COUNTROWS ( Achat )
 		formatString: #,0
 		displayFolder: Volume
+		lineageTag: b4ebcea3-77f4-499c-a37a-15bb2dc535d9
 
 	/// Somme des montants retenus (ordre de grandeur : souvent des maximums d'accords-cadres)
 	measure 'Montant total' = SUM ( Achat[montant] )
 		formatString: #,0 €
 		displayFolder: Volume
+		lineageTag: 76241ac3-c7e2-4e11-bab7-43db946e711e
 
 	/// Montant du marché typique : la médiane, insensible aux montants géants
 	measure 'Montant médian' = MEDIAN ( Achat[montant] )
 		formatString: #,0 €
 		displayFolder: Volume
+		lineageTag: 4f707565-fe23-4a3d-8b23-c6856c1da7e3
 
 	/// Part des achats n'ayant reçu qu'une offre, parmi ceux où le nombre d'offres est connu
 	measure 'Taux offre unique' =
@@ -160,15 +27,18 @@ table Achat
 			)
 		formatString: 0.0 %
 		displayFolder: Concurrence
+		lineageTag: ec28299d-67e2-4e15-84e7-c81823ad888a
 
 	/// Part des achats où le nombre d'offres est renseigné
 	measure 'Couverture offres' = DIVIDE ( COUNT ( Achat[offres_recues] ), [Achats] )
 		formatString: 0.0 %
 		displayFolder: Concurrence
+		lineageTag: 120e872d-9e23-4fe1-a5bf-f0e91c0cfb7a
 
 	measure 'Offres reçues (médiane)' = MEDIAN ( Achat[offres_recues] )
 		formatString: 0.0
 		displayFolder: Concurrence
+		lineageTag: 3859c63f-b3a6-4a77-b96d-f50524ecc9a3
 
 	/// Part des achats avec une clause ou un critère environnemental, parmi ceux où l'information existe
 	measure 'Part clause environnementale' =
@@ -178,6 +48,7 @@ table Achat
 			)
 		formatString: 0.0 %
 		displayFolder: Clauses
+		lineageTag: e986fcfc-98e9-4af2-9d40-1a5f7f55c72e
 
 	measure 'Part clause sociale' =
 			DIVIDE (
@@ -186,16 +57,18 @@ table Achat
 			)
 		formatString: 0.0 %
 		displayFolder: Clauses
+		lineageTag: 221cb76a-5a35-4e3e-a1fc-8bdb1dd34dd7
 
-	measure 'Couverture clauses' =
-			DIVIDE ( CALCULATE ( COUNTROWS ( Achat ), NOT ISBLANK ( Achat[clause_environnementale] ) ), [Achats] )
+	measure 'Couverture clauses' = DIVIDE ( CALCULATE ( COUNTROWS ( Achat ), NOT ISBLANK ( Achat[clause_environnementale] ) ), [Achats] )
 		formatString: 0.0 %
 		displayFolder: Clauses
+		lineageTag: fe842554-e0f5-4917-884a-2a87e8f4f7a9
 
 	/// Part des achats modifiés par au moins un avenant
 	measure 'Part modifiés' = DIVIDE ( COALESCE ( CALCULATE ( COUNTROWS ( Achat ), Achat[nb_modifications] > 0 ), 0 ), [Achats] )
 		formatString: 0.0 %
 		displayFolder: Avenants
+		lineageTag: 2f6f0b2a-26ba-482e-9c1d-52772ff1284f
 
 	/// Évolution cumulée du montant des achats modifiés (mêmes achats au numérateur et au dénominateur)
 	measure 'Évolution montant avenants' =
@@ -205,23 +78,188 @@ table Achat
 			    DIVIDE ( SUMX ( Modifies, Achat[montant] ), SUMX ( Modifies, Achat[montant_initial] ) ) - 1
 		formatString: +0.0 %;-0.0 %;0.0 %
 		displayFolder: Avenants
+		lineageTag: 01a213cc-5d45-4361-9228-92fcee046d1b
 
 	/// Achats signalés par au moins une règle de détection (étape 5)
 	measure 'Achats signalés' = COALESCE ( CALCULATE ( COUNTROWS ( Achat ), Achat[signale_par_nous] = "Oui" ), 0 )
 		formatString: #,0
 		displayFolder: Anomalies
+		lineageTag: 312516cc-9535-47dc-80df-7596ae0e0237
 
 	/// Part des achats signalés, parmi ceux qui ont pu être évalués (montant publié positif)
-	measure 'Part signalée' =
-			DIVIDE ( [Achats signalés], CALCULATE ( COUNTROWS ( Achat ), Achat[signale_par_nous] <> "Non évalué" ) )
+	measure 'Part signalée' = DIVIDE ( [Achats signalés], CALCULATE ( COUNTROWS ( Achat ), Achat[signale_par_nous] <> "Non évalué" ) )
 		formatString: 0.0 %
 		displayFolder: Anomalies
+		lineageTag: 9a238155-6aa9-4cc5-9be2-4fc8c494b296
 
 	/// Montant tel que publié, pour les seuls achats signalés (vide sinon : la table n'affiche qu'eux)
-	measure 'Montant publié (signalé)' =
-			CALCULATE ( SUM ( Achat[montant_brut] ), Achat[signale_par_nous] = "Oui" )
+	measure 'Montant publié (signalé)' = CALCULATE ( SUM ( Achat[montant_brut] ), Achat[signale_par_nous] = "Oui" )
 		formatString: #,0.00 €
 		displayFolder: Anomalies
+		lineageTag: 378bf58a-e2e0-4a80-bfc5-e6fac0fef2a1
+
+	column achat_cle
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 30840eb9-f90a-474c-9e6e-eaf8e58c1592
+		summarizeBy: none
+		sourceColumn: achat_cle
+
+	column achat_id
+		dataType: string
+		lineageTag: a166e53e-b1a9-407d-8746-d84d09afdd8c
+		summarizeBy: none
+		sourceColumn: achat_id
+
+	column acheteur_id
+		dataType: string
+		lineageTag: 2fe1ebe5-3062-495a-a86a-7d2417cd37f0
+		summarizeBy: none
+		sourceColumn: acheteur_id
+
+	column cpv_division
+		dataType: string
+		lineageTag: e52859e3-62e3-4444-9aee-71ade354a031
+		summarizeBy: none
+		sourceColumn: cpv_division
+
+	column date_notification
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: eb5cf378-d7d2-4194-b173-48ce4dddf6a6
+		summarizeBy: none
+		sourceColumn: date_notification
+
+	column objet
+		dataType: string
+		lineageTag: db235d1b-1273-49f2-b156-33b12821d2f2
+		summarizeBy: none
+		sourceColumn: objet
+
+	column nature
+		dataType: string
+		lineageTag: cefc6068-fedc-4458-981a-197864d897da
+		summarizeBy: none
+		sourceColumn: nature
+
+	column type
+		dataType: string
+		lineageTag: a39bc627-7246-422d-bc71-a63446b51d90
+		summarizeBy: none
+		sourceColumn: type
+
+	column procedure
+		dataType: string
+		lineageTag: f1d67eb3-48e2-4e8a-86df-5b0fd828f934
+		summarizeBy: none
+		sourceColumn: procedure
+
+	column forme_prix
+		dataType: string
+		lineageTag: 9a39a037-afee-48a7-ac5a-6a94e1eb5b70
+		summarizeBy: none
+		sourceColumn: forme_prix
+
+	column duree_mois
+		dataType: int64
+		lineageTag: 557877dd-cece-4972-83ff-f808f22681d6
+		summarizeBy: none
+		sourceColumn: duree_mois
+
+	column offres_recues
+		dataType: int64
+		lineageTag: 11f4420a-6fb7-46e0-bc2e-65b6c09da9c6
+		summarizeBy: none
+		sourceColumn: offres_recues
+
+	column nb_titulaires
+		dataType: int64
+		lineageTag: 11b0913c-d1cb-45a1-b24b-3fe9703c9a6e
+		summarizeBy: none
+		sourceColumn: nb_titulaires
+
+	column nb_modifications
+		dataType: int64
+		lineageTag: 26c9d1b7-e9ae-446b-a6f9-c088fc55837c
+		summarizeBy: none
+		sourceColumn: nb_modifications
+
+	column montant_initial
+		dataType: double
+		formatString: #,0 €
+		lineageTag: 4c9e9a35-7d9c-492f-8362-27ebc3a6624b
+		summarizeBy: none
+		sourceColumn: montant_initial
+
+	column montant
+		dataType: double
+		formatString: #,0 €
+		lineageTag: 6a539316-9840-4176-ae0b-ea18849bb6d1
+		summarizeBy: none
+		sourceColumn: montant
+
+	column montant_brut
+		dataType: double
+		formatString: #,0 €
+		lineageTag: b4992da5-35ef-4dae-b2ae-7dfd27c78b1d
+		summarizeBy: none
+		sourceColumn: montant_brut
+
+	column motif_exclusion_montant
+		dataType: string
+		lineageTag: abe31a7b-ea11-4008-812d-800c857a290b
+		summarizeBy: none
+		sourceColumn: motif_exclusion_montant
+
+	column montant_anomalie
+		dataType: string
+		lineageTag: d718912d-7bf0-4118-8ce9-1146028612bc
+		summarizeBy: none
+		sourceColumn: montant_anomalie
+
+	column clause_sociale
+		dataType: boolean
+		lineageTag: 84b0c953-b2dd-477a-8084-a2613c207722
+		summarizeBy: none
+		sourceColumn: clause_sociale
+
+	column clause_environnementale
+		dataType: boolean
+		lineageTag: 842aef26-b317-4a2e-9f7d-aa6f8c5cdc72
+		summarizeBy: none
+		sourceColumn: clause_environnementale
+
+	column marche_innovant
+		dataType: boolean
+		lineageTag: c47c30d7-97b2-457d-9a00-d3cc00574aa0
+		summarizeBy: none
+		sourceColumn: marche_innovant
+
+	column z_modifie
+		dataType: double
+		formatString: 0.00
+		lineageTag: b2902421-a85a-420e-876e-3864915c6bcf
+		summarizeBy: none
+		sourceColumn: z_modifie
+
+	column raisons
+		dataType: string
+		lineageTag: 5369529a-ab49-48d9-a0b5-0bcb6b904f35
+		summarizeBy: none
+		sourceColumn: raisons
+
+	column signale_par_nous
+		dataType: string
+		lineageTag: 32847824-19d8-4329-b192-4066e31feb66
+		summarizeBy: none
+		sourceColumn: signale_par_nous
+
+	column signale_par_reference
+		dataType: string
+		lineageTag: 23288c37-a6b1-479c-97be-9d1b6108cf6b
+		summarizeBy: none
+		sourceColumn: signale_par_reference
 
 	partition Achat = m
 		mode: import
@@ -230,3 +268,4 @@ table Achat
 				    Source = Parquet.Document(File.Contents(DossierDonnees & "achat.parquet"))
 				in
 				    Source
+
