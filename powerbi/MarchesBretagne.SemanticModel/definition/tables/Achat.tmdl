@@ -116,6 +116,27 @@ table Achat
 		summarizeBy: none
 		sourceColumn: marche_innovant
 
+	column z_modifie
+		dataType: double
+		formatString: 0.00
+		summarizeBy: none
+		sourceColumn: z_modifie
+
+	column raisons
+		dataType: string
+		summarizeBy: none
+		sourceColumn: raisons
+
+	column signale_par_nous
+		dataType: string
+		summarizeBy: none
+		sourceColumn: signale_par_nous
+
+	column signale_par_reference
+		dataType: string
+		summarizeBy: none
+		sourceColumn: signale_par_reference
+
 	/// Nombre d'achats (marchés dédoublonnés, depuis 2019)
 	measure Achats = COUNTROWS ( Achat )
 		formatString: #,0
@@ -184,6 +205,23 @@ table Achat
 			    DIVIDE ( SUMX ( Modifies, Achat[montant] ), SUMX ( Modifies, Achat[montant_initial] ) ) - 1
 		formatString: +0.0 %;-0.0 %;0.0 %
 		displayFolder: Avenants
+
+	/// Achats signalés par au moins une règle de détection (étape 5)
+	measure 'Achats signalés' = COALESCE ( CALCULATE ( COUNTROWS ( Achat ), Achat[signale_par_nous] = "Oui" ), 0 )
+		formatString: #,0
+		displayFolder: Anomalies
+
+	/// Part des achats signalés, parmi ceux qui ont pu être évalués (montant publié positif)
+	measure 'Part signalée' =
+			DIVIDE ( [Achats signalés], CALCULATE ( COUNTROWS ( Achat ), Achat[signale_par_nous] <> "Non évalué" ) )
+		formatString: 0.0 %
+		displayFolder: Anomalies
+
+	/// Montant tel que publié, pour les seuls achats signalés (vide sinon : la table n'affiche qu'eux)
+	measure 'Montant publié (signalé)' =
+			CALCULATE ( SUM ( Achat[montant_brut] ), Achat[signale_par_nous] = "Oui" )
+		formatString: #,0.00 €
+		displayFolder: Anomalies
 
 	partition Achat = m
 		mode: import

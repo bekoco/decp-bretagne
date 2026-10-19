@@ -1,0 +1,25 @@
+table Signalement
+
+	column achat_cle
+		dataType: int64
+		isHidden
+		summarizeBy: none
+		sourceColumn: achat_cle
+
+	column regle
+		dataType: string
+		summarizeBy: none
+		sourceColumn: regle
+
+	/// Nombre de règles déclenchées (un achat peut en déclencher plusieurs)
+	measure Signalements = COUNTROWS ( Signalement )
+		formatString: #,0
+		displayFolder: Anomalies
+
+	partition Signalement = m
+		mode: import
+		source =
+				let
+				    Source = Parquet.Document(File.Contents(DossierDonnees & "signalement.parquet"))
+				in
+				    Source

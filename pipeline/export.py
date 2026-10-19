@@ -22,8 +22,16 @@ TABLES = {
                objet, nature, type, procedure, forme_prix, duree_mois, offres_recues,
                nb_titulaires, nb_modifications, montant_initial, montant, montant_brut,
                motif_exclusion_montant, montant_anomalie,
-               clause_sociale, clause_environnementale, marche_innovant
-        FROM v_marche JOIN cle_achat cle USING (uid)
+               clause_sociale, clause_environnementale, marche_innovant,
+               -- Détection d'anomalies (étape 5)
+               an.z_modifie, nullif(an.raisons, '') AS raisons,
+               CASE WHEN an.uid IS NULL THEN 'Non évalué' WHEN an.nb_regles > 0 THEN 'Oui' ELSE 'Non' END AS signale_par_nous,
+               CASE WHEN montant_anomalie IS NOT NULL THEN 'Oui' ELSE 'Non' END AS signale_par_reference
+        FROM v_marche JOIN cle_achat cle USING (uid) LEFT JOIN (SELECT uid, z_modifie, raisons, nb_regles FROM anomalie) an USING (uid)
+    """,
+    # Une ligne par règle d'anomalie déclenchée
+    "signalement": """
+        SELECT cle.achat_cle, s.regle FROM v_signalement s JOIN cle_achat cle USING (uid)
     """,
     # Pont : un couple achat × titulaire, avec le montant ventilé (étape 3)
     "attribution": """

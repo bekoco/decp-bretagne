@@ -1,0 +1,98 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "anomalies08",
+  "position": {
+    "x": 640,
+    "y": 264,
+    "z": 800,
+    "height": 216,
+    "width": 592,
+    "tabOrder": 8
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "signale_par_nous"
+                }
+              },
+              "queryRef": "Achat.signale_par_nous",
+              "nativeQueryRef": "signale_par_nous",
+              "displayName": "Signalé par nos règles"
+            }
+          ]
+        },
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "signale_par_reference"
+                }
+              },
+              "queryRef": "Achat.signale_par_reference",
+              "nativeQueryRef": "signale_par_reference",
+              "displayName": "Signalé par la référence"
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "Achats"
+                }
+              },
+              "queryRef": "Achat.Achats",
+              "nativeQueryRef": "Achats"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Achats signalés : nos règles (lignes) face à la référence (colonnes)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

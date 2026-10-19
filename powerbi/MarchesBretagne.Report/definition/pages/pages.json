@@ -4,7 +4,8 @@
     "vue-ensemble",
     "concurrence",
     "entreprises",
-    "avenants-clauses"
+    "avenants-clauses",
+    "anomalies"
   ],
   "activePageName": "vue-ensemble"
 }

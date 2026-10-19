@@ -1,0 +1,184 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "anomalies09",
+  "position": {
+    "x": 24,
+    "y": 496,
+    "z": 900,
+    "height": 176,
+    "width": 1232,
+    "tabOrder": 9
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Acheteur"
+                    }
+                  },
+                  "Property": "acheteur_nom"
+                }
+              },
+              "queryRef": "Acheteur.acheteur_nom",
+              "nativeQueryRef": "acheteur_nom",
+              "displayName": "Acheteur"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "objet"
+                }
+              },
+              "queryRef": "Achat.objet",
+              "nativeQueryRef": "objet",
+              "displayName": "Objet"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "raisons"
+                }
+              },
+              "queryRef": "Achat.raisons",
+              "nativeQueryRef": "raisons",
+              "displayName": "Raison du signalement"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "Montant publié (signalé)"
+                }
+              },
+              "queryRef": "Achat.Montant publié (signalé)",
+              "nativeQueryRef": "Montant publié (signalé)",
+              "displayName": "Montant publié"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Achat"
+                  }
+                },
+                "Property": "Montant publié (signalé)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Achats signalés'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "300D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Acheteur.acheteur_nom"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "380D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Achat.objet"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "340D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Achat.raisons"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "160D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Achat.Montant publié (signalé)"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -126,8 +126,17 @@ def line(pos, category, measures, title):
                   objects={"labels": [{"properties": {"show": lit(True)}}], **NO_AXIS_TITLE})
 
 
-def table(pos, fields, title, sort=None):
-    return visual("tableEx", pos, {"Values": fields}, title, sort=sort)
+def table(pos, fields, title, sort=None, widths: dict | None = None):
+    """widths : largeur en pixels de certaines colonnes, ex. {"Achat.objet": 420}."""
+    objects = None
+    if widths:
+        objects = {"columnWidth": [{"properties": {"value": lit(w)}, "selector": {"metadata": ref}}
+                                   for ref, w in widths.items()]}
+    return visual("tableEx", pos, {"Values": fields}, title, sort=sort, objects=objects)
+
+
+def matrix(pos, rows, columns_, values, title):
+    return visual("pivotTable", pos, {"Rows": [rows], "Columns": [columns_], "Values": values}, title)
 
 
 # ── Grille ─────────────────────────────────────────────────────────────────────
@@ -216,6 +225,30 @@ PAGES = {
         table((M, 424, W - 2 * M, 248), [col("Acheteur", "acheteur_nom", "Acheteur"), col("Acheteur", "departement", "Département"),
                                          mes(A, "Achats"), mes(A, "Montant total"), mes(A, "Montant médian")],
               "Acheteurs", sort={"field": mes(A, "Montant total")}),
+    ]),
+    "anomalies": ("Anomalies", [
+        header("Détection d'anomalies sur les montants",
+               "4 règles explicables, comparées à la colonne montant_anomalie fournie avec les données (la « référence »)"),
+        *slicers(),
+        *[card(p, m, t) for p, (m, t) in zip(row(152, 96, 3), [
+            (mes(A, "Achats signalés"), "Achats signalés"),
+            (mes(A, "Part signalée"), "Part des achats évalués"),
+            (mes("Signalement", "Signalements"), "Règles déclenchées"),
+        ])],
+        bars((M, 264, 600, 216), col("Signalement", "regle"), [mes("Signalement", "Signalements")],
+             "Signalements par règle", sort={"field": mes("Signalement", "Signalements")}),
+        matrix((M + 616, 264, 592, 216), col(A, "signale_par_nous", "Signalé par nos règles"),
+               col(A, "signale_par_reference", "Signalé par la référence"), [mes(A, "Achats")],
+               "Achats signalés : nos règles (lignes) face à la référence (colonnes)"),
+        table((M, 496, W - 2 * M, 176), [col("Acheteur", "acheteur_nom", "Acheteur"), col(A, "objet", "Objet"),
+                                         col(A, "raisons", "Raison du signalement"),
+                                         mes(A, "Montant publié (signalé)", "Montant publié")],
+              "Achats signalés", sort={"field": mes(A, "Montant publié (signalé)")},
+              widths={"Acheteur.acheteur_nom": 300, "Achat.objet": 380, "Achat.raisons": 340,
+                      "Achat.Montant publié (signalé)": 160}),
+        text((M, 680, W - 2 * M, 32), [("Un signalement n'est pas une preuve d'erreur : il désigne un achat à vérifier. "
+                                        "Les très gros achats groupés d'énergie ou de médicaments sont atypiques mais souvent réels.",
+                                        9, ENCRE_2)]),
     ]),
 }
 

@@ -44,6 +44,10 @@ WITH c AS (
             WHERE d.est_doublon_probable
               AND NOT EXISTS (SELECT 1 FROM fact_marche a WHERE a.uid = d.achat_id AND NOT a.est_doublon_probable))
     UNION ALL
+    SELECT 'Anomalies : chaque achat à montant positif est évalué une seule fois',
+           (SELECT count(*) FROM v_marche WHERE montant_brut > 0) - (SELECT count(DISTINCT uid) FROM anomalie)
+         + (SELECT count(*) - count(DISTINCT uid) FROM anomalie)
+    UNION ALL
     SELECT 'Clés des dimensions uniques sans tenir compte de la casse (comme Power BI)',
            (SELECT count(*) - count(DISTINCT lower(acheteur_id)) FROM dim_acheteur)
          + (SELECT count(*) - count(DISTINCT lower(titulaire_id)) FROM dim_titulaire)

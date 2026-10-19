@@ -18,3 +18,7 @@ relationship attribution_titulaire
 	fromColumn: Attribution.titulaire_id
 	toColumn: Titulaire.titulaire_id
 
+relationship signalement_achat
+	fromColumn: Signalement.achat_cle
+	toColumn: Achat.achat_cle
+
