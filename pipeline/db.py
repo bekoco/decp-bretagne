@@ -20,16 +20,26 @@ def connect() -> duckdb.DuckDBPyConnection:
     if not RAW_FILE.exists():
         sys.exit("Données absentes : lancer d'abord  uv run python -m pipeline.extract")
     con = duckdb.connect(str(DB_FILE))
+    # Les chemins relatifs dans le SQL (ex. sql/seeds/…) partent de la racine du projet
+    con.execute(f"SET file_search_path = '{ROOT.as_posix()}'")
     # Point d'entrée de toutes les requêtes : les données brutes, telles qu'extraites
     con.execute(f"CREATE OR REPLACE VIEW raw_decp AS SELECT * FROM '{RAW_FILE.as_posix()}'")
     return con
 
 
 def statements(path: Path) -> list[str]:
-    # Découpage simple sur « ; » : ne pas en mettre dans les chaînes ni les commentaires
-    chunks = path.read_text(encoding="utf-8").split(";")
-    has_code = lambda c: any(l.strip() and not l.strip().startswith("--") for l in c.splitlines())
-    return [c.strip() for c in chunks if has_code(c)]
+    """Une requête se termine par un « ; » en fin de ligne, commentaire « -- » ignoré.
+    Un « ; » dans un commentaire ne coupe donc pas la requête."""
+    result, current = [], []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        current.append(line)
+        code = line.split("--", 1)[0].rstrip()
+        if code.endswith(";"):
+            result.append("\n".join(current))
+            current = []
+    result.append("\n".join(current))
+    has_code = lambda s: any(l.split("--", 1)[0].strip() for l in s.splitlines())
+    return [s.strip() for s in result if has_code(s)]
 
 
 def label(stmt: str) -> str:
@@ -53,11 +63,18 @@ def build() -> None:
         print(f"{path.name}")
         for stmt in statements(path):
             con.execute(stmt)
+
+    # Les contrôles (sql/09_controles.sql) bloquent le build s'ils échouent
+    con.sql("SELECT * FROM controles").show(max_width=120)
+    failed = con.execute("SELECT count(*) FROM controles WHERE NOT ok").fetchone()[0]
+    if failed:
+        sys.exit(f"{failed} contrôle(s) en échec : base construite mais à ne pas utiliser")
     print(f"Base à jour : {DB_FILE}")
 
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")  # console Windows : accents et tableaux
+    sys.stderr.reconfigure(encoding="utf-8")
     match sys.argv[1:]:
         case ["build"]:
             build()

@@ -48,7 +48,8 @@ uv run python -m pipeline.db run sql/exploration/01_exploration.sql
 | Dossier | Contenu |
 |---|---|
 | `pipeline/` | Extraction et exécution des fichiers SQL (Python) |
-| `sql/` | Transformations, exécutées dans l'ordre (`01_`, `02_`…) par `build` |
+| `sql/` | Transformations, exécutées dans l'ordre (`01_`, `02_`…) par `build`, puis contrôles (`09_`) |
+| `sql/seeds/` | Petites tables de référence versionnées (familles CPV) |
 | `sql/exploration/` | Requêtes d'exploration, non exécutées par `build` |
 | `etapes/` | Une note par étape : ce qui a été fait, pourquoi, et les résultats |
 | `powerbi/` | Rapport Power BI au format `.pbip` (à venir) |
@@ -58,7 +59,7 @@ uv run python -m pipeline.db run sql/exploration/01_exploration.sql
 
 - [x] Extraction des données bretonnes
 - [x] Exploration et liste des problèmes de qualité ([étape 1](etapes/01-exploration.md))
-- [ ] Nettoyage et modèle en étoile
+- [x] Nettoyage et modèle en étoile ([étape 2](etapes/02-modele.md))
 - [ ] KPI en SQL
 - [ ] Export Parquet pour Power BI
 - [ ] Tableau de bord Power BI
