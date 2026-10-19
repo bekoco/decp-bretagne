@@ -16,15 +16,20 @@ data.gouv.fr (Parquet national, ~250 Mo)
 data/raw/decp_bretagne.parquet  + source.json (URL, date, nb de lignes)
         │  sql/NN_*.sql : nettoyage, dédoublonnage, catégorisation
         ▼
-data/decp.duckdb  (tables de faits / dimensions, vues KPI)
-        │
+data/decp.duckdb  (tables de faits / dimensions, KPI, anomalies)
+        │  export Parquet
         ▼
-app/ : tableau de bord Streamlit  +  détection d'anomalies
+data/export/*.parquet  →  powerbi/ : tableau de bord Power BI
 ```
+
+Power BI Desktop lit directement les fichiers Parquet exportés (Obtenir les données → Parquet) :
+pas de pilote à installer. Le rapport est enregistré au format projet Power BI (`.pbip`),
+en fichiers texte, pour être versionné proprement dans Git.
 
 ## Démarrage
 
-Prérequis : [uv](https://docs.astral.sh/uv/) (il installe Python et les dépendances).
+Prérequis : [uv](https://docs.astral.sh/uv/) (il installe Python et les dépendances)
+et [Power BI Desktop](https://www.microsoft.com/fr-fr/power-platform/products/power-bi/desktop) (gratuit, Windows) pour le tableau de bord.
 
 ```bash
 uv sync                                   # installe l'environnement
@@ -46,7 +51,7 @@ uv run python -m pipeline.db run sql/exploration/01_exploration.sql
 | `sql/` | Transformations, exécutées dans l'ordre (`01_`, `02_`…) par `build` |
 | `sql/exploration/` | Requêtes d'exploration, non exécutées par `build` |
 | `exercices/` | Étapes du projet et observations |
-| `app/` | Tableau de bord Streamlit (à venir) |
+| `powerbi/` | Rapport Power BI au format `.pbip` (à venir) |
 | `schema.md` | Description de chaque colonne du jeu DECP |
 
 ## Avancement
@@ -55,5 +60,6 @@ uv run python -m pipeline.db run sql/exploration/01_exploration.sql
 - [ ] Exploration et liste des problèmes de qualité
 - [ ] Nettoyage et modèle en étoile
 - [ ] KPI en SQL
-- [ ] Tableau de bord Streamlit
+- [ ] Export Parquet pour Power BI
+- [ ] Tableau de bord Power BI
 - [ ] Détection d'anomalies, comparée à `montant_anomalie`
