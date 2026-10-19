@@ -1,0 +1,137 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "entreprises06",
+  "position": {
+    "x": 24,
+    "y": 424,
+    "z": 600,
+    "height": 248,
+    "width": 1232,
+    "tabOrder": 6
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Titulaire"
+                    }
+                  },
+                  "Property": "titulaire_nom"
+                }
+              },
+              "queryRef": "Titulaire.titulaire_nom",
+              "nativeQueryRef": "titulaire_nom",
+              "displayName": "Titulaire"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Titulaire"
+                    }
+                  },
+                  "Property": "taille_entreprise"
+                }
+              },
+              "queryRef": "Titulaire.taille_entreprise",
+              "nativeQueryRef": "taille_entreprise",
+              "displayName": "Taille"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Titulaire"
+                    }
+                  },
+                  "Property": "departement"
+                }
+              },
+              "queryRef": "Titulaire.departement",
+              "nativeQueryRef": "departement",
+              "displayName": "Département"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Attribution"
+                    }
+                  },
+                  "Property": "Attributions"
+                }
+              },
+              "queryRef": "Attribution.Attributions",
+              "nativeQueryRef": "Attributions"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Attribution"
+                    }
+                  },
+                  "Property": "Montant ventilé"
+                }
+              },
+              "queryRef": "Attribution.Montant ventilé",
+              "nativeQueryRef": "Montant ventilé"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Attribution"
+                  }
+                },
+                "Property": "Montant ventilé"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Principaux titulaires'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

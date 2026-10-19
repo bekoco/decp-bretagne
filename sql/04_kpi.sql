@@ -130,8 +130,9 @@ CREATE OR REPLACE VIEW kpi_achat_local AS
 SELECT
     type,
     count(*)                                                  AS attributions,
-    round(100.0 * avg(est_breton::INT), 1)                    AS part_titulaires_bretons_pct,
-    round(100.0 * sum(montant_ventile) FILTER (WHERE est_breton) / sum(montant_ventile), 1) AS part_montant_bretons_pct,
+    round(100.0 * avg(est_breton::INT), 1)                    AS part_titulaires_bretons_pct,  -- région connue seulement
+    couverture(est_breton)                                    AS couverture_region_pct,
+    round(100.0 * sum(montant_ventile) FILTER (WHERE est_breton) / sum(montant_ventile) FILTER (WHERE est_breton IS NOT NULL), 1) AS part_montant_bretons_pct,
     median(titulaire_distance_km)                             AS distance_mediane_km,
     couverture(titulaire_distance_km)                         AS couverture_distance_pct
 FROM v_attribution

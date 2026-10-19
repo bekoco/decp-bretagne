@@ -7,6 +7,8 @@ Pipeline ETL et tableau de bord sur la commande publique en Bretagne : qui achè
 publiées sur data.gouv.fr sous Licence Ouverte v2.0. Aucune donnée inventée : seules
 les lignes dont l'acheteur est situé en Bretagne (région 53) sont extraites.
 
+![Tableau de bord — vue d'ensemble](docs/captures/1-vue-ensemble.png)
+
 ## Architecture
 
 ```
@@ -54,6 +56,7 @@ uv run python -m pipeline.db run sql/exploration/01_exploration.sql
 | `sql/exploration/` | Requêtes d'exploration, non exécutées par `build` |
 | `etapes/` | Une note par étape : ce qui a été fait, pourquoi, et les résultats |
 | `powerbi/` | Projet Power BI (`.pbip`) : modèle TMDL et rapport |
+| `docs/captures/` | Captures des pages du tableau de bord |
 | `schema.md` | Description de chaque colonne du jeu DECP |
 
 ## Avancement
@@ -63,5 +66,5 @@ uv run python -m pipeline.db run sql/exploration/01_exploration.sql
 - [x] Nettoyage et modèle en étoile ([étape 2](etapes/02-modele.md))
 - [x] KPI en SQL ([étape 3](etapes/03-kpi.md))
 - [x] Export Parquet et modèle Power BI ([étape 4a](etapes/04a-modele-power-bi.md))
-- [ ] Tableau de bord Power BI
+- [x] Tableau de bord Power BI ([étape 4b](etapes/04b-tableau-de-bord.md))
 - [ ] Détection d'anomalies, comparée à `montant_anomalie`

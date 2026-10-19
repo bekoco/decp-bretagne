@@ -109,7 +109,7 @@ calculer chaque mesure, et j'ai comparé aux KPI de l'étape 3.
 | Offre unique 2024 | 22,1 % | 22,1 % |
 | Clause environnementale 2026 | 42,0 % | 42,0 % |
 | PME : attributions / montant | 54,2 % / 21,6 % | 54,2 % / 21,6 % |
-| Titulaires bretons (travaux) | 83,4 % | 83,4 % |
+| Titulaires bretons (travaux) | 87,0 % | 87,0 % |
 | Achats de travaux modifiés / évolution | 20,2 % / +5,0 % | 20,2 % / +5,0 % |
 
 Toutes les valeurs (par année, par taille, par type) sont identiques.

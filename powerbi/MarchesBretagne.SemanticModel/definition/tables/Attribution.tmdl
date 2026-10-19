@@ -43,11 +43,11 @@ table Attribution
 		formatString: 0.0 %
 		displayFolder: Titulaires
 
-	/// Part des attributions à une entreprise bretonne (titulaires non identifiés exclus)
+	/// Part des attributions à une entreprise bretonne, parmi les titulaires dont la région est connue
 	measure 'Part titulaires bretons' =
 			DIVIDE (
 			    COALESCE ( CALCULATE ( [Attributions], Titulaire[est_breton] = TRUE () ), 0 ),
-			    CALCULATE ( [Attributions], Titulaire[titulaire_id] <> "INCONNU" )
+			    CALCULATE ( [Attributions], NOT ISBLANK ( Titulaire[est_breton] ) )
 			)
 		formatString: 0.0 %
 		displayFolder: Achat local

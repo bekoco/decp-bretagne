@@ -150,9 +150,13 @@ Un contrôle vérifie que la somme ventilée retombe exactement sur la somme des
 
 | Type | Titulaires bretons | Distance médiane acheteur → titulaire |
 |---|---:|---:|
-| Travaux | **83,4 %** | 29 km |
-| Services | 56,9 % | 99 km |
-| Fournitures | 38,2 % | 226 km |
+| Travaux | **87,0 %** | 29 km |
+| Services | 58,8 % | 99 km |
+| Fournitures | 40,1 % | 226 km |
+
+> *Corrigé à l'étape 4b :* la part est calculée sur les titulaires dont la région est connue
+> (~96 %). Compter les régions inconnues comme « non bretonnes » la sous-estimait
+> (83,4 % au lieu de 87,0 % pour les travaux).
 
 Les travaux se font avec des entreprises du coin ; les fournitures viennent de loin
 (distributeurs nationaux).

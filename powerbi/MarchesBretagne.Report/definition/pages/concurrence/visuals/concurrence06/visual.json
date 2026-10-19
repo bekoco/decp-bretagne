@@ -1,0 +1,135 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "concurrence06",
+  "position": {
+    "x": 24,
+    "y": 424,
+    "z": 600,
+    "height": 248,
+    "width": 1232,
+    "tabOrder": 6
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Famille achat"
+                    }
+                  },
+                  "Property": "famille_achat"
+                }
+              },
+              "queryRef": "Famille achat.famille_achat",
+              "nativeQueryRef": "famille_achat",
+              "displayName": "Famille d'achat"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "Achats"
+                }
+              },
+              "queryRef": "Achat.Achats",
+              "nativeQueryRef": "Achats"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "Offres reçues (médiane)"
+                }
+              },
+              "queryRef": "Achat.Offres reçues (médiane)",
+              "nativeQueryRef": "Offres reçues (médiane)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "Taux offre unique"
+                }
+              },
+              "queryRef": "Achat.Taux offre unique",
+              "nativeQueryRef": "Taux offre unique"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "Couverture offres"
+                }
+              },
+              "queryRef": "Achat.Couverture offres",
+              "nativeQueryRef": "Couverture offres"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Achat"
+                  }
+                },
+                "Property": "Achats"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Concurrence par famille d''achat'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

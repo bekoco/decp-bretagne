@@ -1,0 +1,136 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "avenantsclauses07",
+  "position": {
+    "x": 24,
+    "y": 424,
+    "z": 700,
+    "height": 248,
+    "width": 1232,
+    "tabOrder": 7
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Acheteur"
+                    }
+                  },
+                  "Property": "acheteur_nom"
+                }
+              },
+              "queryRef": "Acheteur.acheteur_nom",
+              "nativeQueryRef": "acheteur_nom",
+              "displayName": "Acheteur"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Acheteur"
+                    }
+                  },
+                  "Property": "departement"
+                }
+              },
+              "queryRef": "Acheteur.departement",
+              "nativeQueryRef": "departement",
+              "displayName": "Département"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "Achats"
+                }
+              },
+              "queryRef": "Achat.Achats",
+              "nativeQueryRef": "Achats"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "Montant total"
+                }
+              },
+              "queryRef": "Achat.Montant total",
+              "nativeQueryRef": "Montant total"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Achat"
+                    }
+                  },
+                  "Property": "Montant médian"
+                }
+              },
+              "queryRef": "Achat.Montant médian",
+              "nativeQueryRef": "Montant médian"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Achat"
+                  }
+                },
+                "Property": "Montant total"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Acheteurs'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

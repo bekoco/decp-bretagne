@@ -25,19 +25,24 @@ CREATE OR REPLACE TABLE dim_titulaire AS
 SELECT
     titulaire_id,
     arg_max(titulaire_type_identifiant, date_publication) AS type_identifiant,
-    arg_max(titulaire_nom, date_publication)              AS titulaire_nom,
+    -- Règle 10 : 1 129 identifiants mal formés (ex. SIREN répété) ne sont pas retrouvés dans SIRENE,
+    -- donc sans nom. On les nomme explicitement pour qu'ils ne fusionnent pas en une ligne vide.
+    coalesce(arg_max(titulaire_nom, date_publication),
+             'Non retrouvé dans SIRENE (' || titulaire_id || ')') AS titulaire_nom,
     coalesce(arg_max(titulaire_categorie, date_publication), 'Non renseignée') AS taille_entreprise,
     arg_max(titulaire_activite_code, date_publication)    AS activite_code,
     arg_max(titulaire_activite_libelle, date_publication) AS activite,
     arg_max(titulaire_commune_nom, date_publication)      AS commune,
     arg_max(titulaire_departement_nom, date_publication)  AS departement,
     arg_max(titulaire_region_nom, date_publication)       AS region,
-    coalesce(arg_max(titulaire_region_code, date_publication) = '53', false) AS est_breton
+    -- Région inconnue = on ne sait pas (NULL), pas « non breton » : sinon la part d'achat
+    -- local serait sous-estimée (65,5 % au lieu de 68,3 %)
+    arg_max(titulaire_region_code, date_publication) = '53' AS est_breton
 FROM stg_decp
 WHERE titulaire_id IS NOT NULL
 GROUP BY titulaire_id
 UNION ALL
-SELECT 'INCONNU', NULL, 'Titulaire non renseigné', 'Non renseignée', NULL, NULL, NULL, NULL, NULL, false;
+SELECT 'INCONNU', NULL, 'Titulaire non renseigné', 'Non renseignée', NULL, NULL, NULL, NULL, NULL, NULL;
 
 -- Familles d'achat : les 45 divisions de la nomenclature CPV (2 premiers chiffres du code),
 -- plus une ligne pour les codes absents ou invalides.
