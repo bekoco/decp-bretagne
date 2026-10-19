@@ -50,14 +50,14 @@ uv run python -m pipeline.db run sql/exploration/01_exploration.sql
 | `pipeline/` | Extraction et exécution des fichiers SQL (Python) |
 | `sql/` | Transformations, exécutées dans l'ordre (`01_`, `02_`…) par `build` |
 | `sql/exploration/` | Requêtes d'exploration, non exécutées par `build` |
-| `exercices/` | Étapes du projet et observations |
+| `etapes/` | Une note par étape : ce qui a été fait, pourquoi, et les résultats |
 | `powerbi/` | Rapport Power BI au format `.pbip` (à venir) |
 | `schema.md` | Description de chaque colonne du jeu DECP |
 
 ## Avancement
 
 - [x] Extraction des données bretonnes
-- [ ] Exploration et liste des problèmes de qualité
+- [x] Exploration et liste des problèmes de qualité ([étape 1](etapes/01-exploration.md))
 - [ ] Nettoyage et modèle en étoile
 - [ ] KPI en SQL
 - [ ] Export Parquet pour Power BI
