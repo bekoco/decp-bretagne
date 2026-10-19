@@ -32,6 +32,18 @@ WITH c AS (
     SELECT 'Aucun montant retenu nul, négatif ou bouche-trou',
            (SELECT count(*) FROM fact_marche WHERE montant <= 0 OR montant = 12311111111)
     UNION ALL
+    SELECT 'nb_titulaires = nombre de lignes du marché dans le lien',
+           (SELECT count(*) FROM fact_marche f
+            WHERE f.nb_titulaires <> (SELECT count(*) FROM lien_marche_titulaire l WHERE l.uid = f.uid))
+    UNION ALL
+    SELECT 'Ventilation : la somme des montants ventilés = la somme des montants',
+           (SELECT round(abs(sum(montant_ventile) - (SELECT sum(montant) FROM v_marche))) FROM v_attribution)
+    UNION ALL
+    SELECT 'Chaque doublon pointe vers un achat qui n''est pas lui-même un doublon',
+           (SELECT count(*) FROM fact_marche d
+            WHERE d.est_doublon_probable
+              AND NOT EXISTS (SELECT 1 FROM fact_marche a WHERE a.uid = d.achat_id AND NOT a.est_doublon_probable))
+    UNION ALL
     SELECT 'Clés uniques dans les dimensions',
            (SELECT count(*) - count(DISTINCT acheteur_id) FROM dim_acheteur)
          + (SELECT count(*) - count(DISTINCT titulaire_id) FROM dim_titulaire)

@@ -76,9 +76,10 @@ SELECT
     CASE WHEN dureeMois BETWEEN 1 AND 360 THEN dureeMois END AS duree_mois,
     CASE WHEN offresRecues >= 1 THEN offresRecues END AS offres_recues,
 
-    -- Clauses : « Sans objet » ou vide = pas de clause
-    coalesce(considerationsSociales NOT IN ('Sans objet'), false) AS clause_sociale,
-    coalesce(considerationsEnvironnementales NOT IN ('Sans objet'), false) AS clause_environnementale,
+    -- Clauses : « Sans objet » = pas de clause ; vide = on ne sait pas (le champ n'existe
+    -- que dans le format de publication récent), donc NULL et non « pas de clause »
+    considerationsSociales <> 'Sans objet' AS clause_sociale,
+    considerationsEnvironnementales <> 'Sans objet' AS clause_environnementale,
     marcheInnovant AS marche_innovant,
     sousTraitanceDeclaree AS sous_traitance_declaree,
     idAccordCadre AS id_accord_cadre,

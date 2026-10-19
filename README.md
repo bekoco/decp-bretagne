@@ -60,7 +60,7 @@ uv run python -m pipeline.db run sql/exploration/01_exploration.sql
 - [x] Extraction des données bretonnes
 - [x] Exploration et liste des problèmes de qualité ([étape 1](etapes/01-exploration.md))
 - [x] Nettoyage et modèle en étoile ([étape 2](etapes/02-modele.md))
-- [ ] KPI en SQL
+- [x] KPI en SQL ([étape 3](etapes/03-kpi.md))
 - [ ] Export Parquet pour Power BI
 - [ ] Tableau de bord Power BI
 - [ ] Détection d'anomalies, comparée à `montant_anomalie`

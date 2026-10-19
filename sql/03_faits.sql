@@ -3,6 +3,7 @@
 -- fact_marche      : une ligne par marché (uid), dans sa version actuelle.
 -- lien_marche_titulaire : une ligne par couple marché × titulaire.
 -- Le montant est porté UNIQUEMENT par fact_marche : c'est ce qui évite le double compte (règle 2).
+-- achat_id regroupe les publications multiples d'un même achat (règle 9, étape 3).
 
 -- Ce qu'on sait d'un marché sur toute son histoire (version initiale, nombre d'avenants)
 CREATE OR REPLACE TEMP TABLE historique AS
@@ -11,7 +12,8 @@ SELECT
     min(date_notification) FILTER (WHERE modification_id = 0) AS date_notification,
     max(montant_retenu)    FILTER (WHERE modification_id = 0) AS montant_initial,
     max(modification_id)                                      AS nb_modifications,
-    count(DISTINCT titulaire_id) FILTER (WHERE est_actuelle)  AS nb_titulaires
+    -- même règle que lien_marche_titulaire : un titulaire non identifié compte pour un
+    count(DISTINCT coalesce(titulaire_id, 'INCONNU')) FILTER (WHERE est_actuelle) AS nb_titulaires
 FROM stg_decp
 GROUP BY uid;
 
@@ -22,7 +24,7 @@ FROM stg_decp
 WHERE est_actuelle
 ORDER BY uid, titulaire_id;
 
-CREATE OR REPLACE TABLE fact_marche AS
+CREATE OR REPLACE TEMP TABLE marche AS
 SELECT
     a.uid,
     a.acheteur_id,
@@ -51,6 +53,21 @@ SELECT
     a.id_accord_cadre
 FROM actuel a
 JOIN historique h USING (uid);
+
+-- Règle 9 : même acheteur, même date, même montant, même objet = un seul achat publié
+-- plusieurs fois (deux sources différentes, ou un accord-cadre publié une fois par lot avec
+-- le montant global recopié). Le premier uid du groupe sert d'identifiant d'achat.
+CREATE OR REPLACE TABLE fact_marche AS
+SELECT *, achat_id <> uid AS est_doublon_probable
+FROM (
+    SELECT
+        *,
+        CASE WHEN montant IS NOT NULL AND objet IS NOT NULL AND date_notification IS NOT NULL
+             THEN first_value(uid) OVER (PARTITION BY acheteur_id, date_notification, montant, objet ORDER BY uid)
+             ELSE uid
+        END AS achat_id
+    FROM marche
+);
 
 CREATE OR REPLACE TABLE lien_marche_titulaire AS
 SELECT
